@@ -8,5 +8,5 @@ object CommandConst {
 
     const val ADD_SUB_COMMAND = "add"
     const val REMOVE_SUB_COMMAND = "remove"
-    const val CHECK_SUB_COMMAND = "check"
+    const val LIST_SUB_COMMAND = "list"
 }

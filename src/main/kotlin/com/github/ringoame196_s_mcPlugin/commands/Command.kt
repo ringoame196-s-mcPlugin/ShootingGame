@@ -43,7 +43,7 @@ class Command(plugin: Plugin) : CommandExecutor, TabCompleter {
                 CommandConst.TARGET_COMMAND -> mutableListOf(
                     CommandConst.ADD_SUB_COMMAND,
                     CommandConst.REMOVE_SUB_COMMAND,
-                    CommandConst.CHECK_SUB_COMMAND
+                    CommandConst.LIST_SUB_COMMAND
                 )
                 else -> mutableListOf()
             }
