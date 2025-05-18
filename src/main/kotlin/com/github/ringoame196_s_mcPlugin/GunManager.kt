@@ -1,5 +1,7 @@
 package com.github.ringoame196_s_mcPlugin
 
+import org.bukkit.ChatColor
+import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.entity.LivingEntity
@@ -7,10 +9,13 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
 class GunManager {
+    private val gunItemType = Material.GOLDEN_HOE
+    private val gunItemName = "${ChatColor.YELLOW}銃"
+
     private val firingRangeDistance = 50.0
 
     fun checkGun(item: ItemStack): Boolean {
-        return true
+        return item.type == gunItemType && item.itemMeta?.displayName == gunItemName
     }
 
     fun shot(player: Player): LivingEntity? {
