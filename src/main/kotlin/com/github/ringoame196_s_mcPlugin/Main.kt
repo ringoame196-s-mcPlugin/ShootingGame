@@ -8,8 +8,15 @@ class Main : JavaPlugin() {
     private val plugin = this
     override fun onEnable() {
         super.onEnable()
+        saveDefaultConfig()
+        loadConfig()
+
         server.pluginManager.registerEvents(GunEvent(plugin), plugin)
         val command = getCommand("shootinggame")
         command!!.setExecutor(Command(plugin))
+    }
+
+    private fun loadConfig() {
+        Data.firingRangeDistance = config.getDouble("firing_range_distance")
     }
 }
