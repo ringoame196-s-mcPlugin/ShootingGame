@@ -8,7 +8,7 @@ class Main : JavaPlugin() {
     private val plugin = this
     override fun onEnable() {
         super.onEnable()
-        server.pluginManager.registerEvents(Events(), plugin)
+        server.pluginManager.registerEvents(GunEvent(), plugin)
         val command = getCommand("shootinggame")
         command!!.setExecutor(Command())
     }
