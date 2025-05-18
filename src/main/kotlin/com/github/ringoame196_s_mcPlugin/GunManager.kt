@@ -17,7 +17,6 @@ class GunManager(plugin: Plugin) {
     val gunItemName = "${ChatColor.YELLOW}銃"
     private val bulletKey = NamespacedKey(plugin, "bullet")
 
-    private val firingRangeDistance = 50.0
     private val maxBullet = 15
 
     fun checkGun(item: ItemStack): Boolean {
@@ -25,6 +24,7 @@ class GunManager(plugin: Plugin) {
     }
 
     fun shot(player: Player, gun: ItemStack): LivingEntity? {
+        val firingRangeDistance = Data.firingRangeDistance ?: 50.0
         val sound = Sound.ENTITY_FIREWORK_ROCKET_BLAST
         player.world.playSound(player.location, sound, 1f, 1f)
 
