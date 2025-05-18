@@ -1,0 +1,60 @@
+package com.github.ringoame196_s_mcPlugin
+
+import net.md_5.bungee.api.chat.ClickEvent
+import net.md_5.bungee.api.chat.ComponentBuilder
+import net.md_5.bungee.api.chat.HoverEvent
+import net.md_5.bungee.api.chat.TextComponent
+import org.bukkit.ChatColor
+import org.bukkit.entity.Player
+import org.bukkit.plugin.Plugin
+import java.io.File
+
+class TargetManager(plugin: Plugin) {
+    private val saveKey = "targetList"
+    private val file = File(plugin.dataFolder, Data.TARGET_LIST_FILE_NAME)
+
+    fun add(player: Player) {
+        Data.targetList.add(player.location.block.location)
+        saveFile() // ymlに保存
+
+        val message = "${ChatColor.AQUA}ターゲットを追加しました"
+        player.sendMessage(message)
+    }
+
+    fun remove(player: Player) {
+        val location = player.location.block.location
+
+        if (Data.targetList.contains(location)) {
+            Data.targetList.remove(location)
+            saveFile() // ymlに保存
+            val message = "${ChatColor.YELLOW}現在の位置のターゲットを削除しました"
+            player.sendMessage(message)
+        } else {
+            val message = "${ChatColor.RED}現在の位置は登録されていません"
+            player.sendMessage(message)
+        }
+    }
+
+    fun check(player: Player) {
+        player.sendMessage("${ChatColor.YELLOW}[ターゲット一覧]")
+        for (target in Data.targetList) {
+            val command = "/tp @s ${target.x} ${target.y} ${target.z}"
+
+            val prefix = net.md_5.bungee.api.chat.TextComponent("${target.world?.name} ${target.x} ${target.y} ${target.z}")
+
+            val clickable = TextComponent("[クリック]")
+            clickable.clickEvent = ClickEvent(ClickEvent.Action.RUN_COMMAND, command)
+            clickable.hoverEvent = HoverEvent(HoverEvent.Action.SHOW_TEXT, ComponentBuilder("${ChatColor.YELLOW}クリックでtp").create())
+            clickable.color = net.md_5.bungee.api.ChatColor.YELLOW
+
+            prefix.addExtra(clickable)
+            player.spigot().sendMessage(prefix)
+        }
+    }
+
+    fun saveFile() {
+    }
+
+    fun loadFile() {
+    }
+}

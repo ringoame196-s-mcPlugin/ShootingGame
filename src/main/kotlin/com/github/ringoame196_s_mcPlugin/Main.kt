@@ -11,6 +11,10 @@ class Main : JavaPlugin() {
         saveDefaultConfig()
         loadConfig()
 
+        // targetList関係
+        val targetManager = TargetManager(plugin)
+        targetManager.loadFile()
+
         server.pluginManager.registerEvents(GunEvent(plugin), plugin)
         val command = getCommand("shootinggame")
         command!!.setExecutor(Command(plugin))
