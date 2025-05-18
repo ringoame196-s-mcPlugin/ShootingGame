@@ -16,8 +16,7 @@ class GunManager(plugin: Plugin) {
     val gunItemType = Material.GOLDEN_HOE
     val gunItemName = "${ChatColor.YELLOW}銃"
     private val bulletKey = NamespacedKey(plugin, "bullet")
-
-    private val maxBullet = 15
+    private val maxBullet = Data.maxBullet
 
     fun checkGun(item: ItemStack): Boolean {
         return item.type == gunItemType && item.itemMeta?.displayName == gunItemName

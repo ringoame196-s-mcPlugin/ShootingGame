@@ -23,5 +23,6 @@ class Main : JavaPlugin() {
 
     private fun loadConfig() {
         Data.firingRangeDistance = config.getDouble("firing_range_distance")
+        Data.maxBullet = config.getInt("max_bullet")
     }
 }
