@@ -1,5 +1,6 @@
 package com.github.ringoame196_s_mcPlugin.commands
 
+import com.github.ringoame196_s_mcPlugin.GameManager
 import com.github.ringoame196_s_mcPlugin.GunManager
 import com.github.ringoame196_s_mcPlugin.TargetManager
 import org.bukkit.ChatColor
@@ -13,12 +14,15 @@ import org.bukkit.plugin.Plugin
 
 class Command(private val plugin: Plugin) : CommandExecutor, TabCompleter {
     private val gunManager = GunManager(plugin)
+    private val gameManager = GameManager(plugin)
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         val command = args[0]
         when (command) {
             CommandConst.GIVE_COMMAND -> give(sender as? Player ?: return true)
             CommandConst.TARGET_COMMAND -> return target(sender as? Player ?: return true, args)
+            CommandConst.START_COMMAND -> gameManager.start(sender)
+            CommandConst.STOP_COMMAND -> gameManager.stop()
             else -> {
                 val message = "${ChatColor.RED}構文が間違っています"
                 sender.sendMessage(message)

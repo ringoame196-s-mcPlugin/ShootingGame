@@ -5,6 +5,7 @@ import net.md_5.bungee.api.chat.ComponentBuilder
 import net.md_5.bungee.api.chat.HoverEvent
 import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.ChatColor
+import org.bukkit.entity.Pig
 import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
 import java.io.File
@@ -50,6 +51,19 @@ class TargetManager(plugin: Plugin) {
             prefix.addExtra(clickable)
             player.spigot().sendMessage(prefix)
         }
+    }
+
+    fun randomSummon() {
+        val name = "${ChatColor.GREEN}ターゲット"
+        val location = Data.targetList.random()
+        val pig: Pig? = location.world?.spawn(location.clone().add(0.5, 0.0, 0.5), Pig::class.java)
+        pig?.let {
+            // ゾンビの設定
+            it.setAI(false)
+            it.customName = name
+            it.isCustomNameVisible = true
+        }
+        Data.target = pig
     }
 
     fun saveFile() {
