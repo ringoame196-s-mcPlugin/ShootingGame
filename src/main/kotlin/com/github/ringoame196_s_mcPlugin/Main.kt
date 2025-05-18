@@ -10,6 +10,6 @@ class Main : JavaPlugin() {
         super.onEnable()
         server.pluginManager.registerEvents(GunEvent(plugin), plugin)
         val command = getCommand("shootinggame")
-        command!!.setExecutor(Command())
+        command!!.setExecutor(Command(plugin))
     }
 }

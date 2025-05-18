@@ -22,6 +22,7 @@ class GunEvent(plugin: Plugin) : Listener {
 
         when (action) {
             Action.RIGHT_CLICK_AIR, Action.RIGHT_CLICK_BLOCK -> {
+                if (player.hasCooldown(item.type)) return
                 if (gunManager.acquisitionBullet(item) <= 0) {
                     val sound = Sound.BLOCK_DISPENSER_DISPENSE
                     player.playSound(player, sound, 1f, 1f)
@@ -31,9 +32,9 @@ class GunEvent(plugin: Plugin) : Listener {
             }
             else -> {
                 gunManager.reload(item)
-                gunManager.displayBullet(item)
                 val sound = Sound.BLOCK_IRON_DOOR_OPEN
                 player.playSound(player, sound, 1f, 1f)
+                player.setCooldown(item.type, 20)
             }
         }
     }

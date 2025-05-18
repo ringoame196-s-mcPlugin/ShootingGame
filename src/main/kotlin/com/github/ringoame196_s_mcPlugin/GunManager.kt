@@ -13,8 +13,8 @@ import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.Plugin
 
 class GunManager(plugin: Plugin) {
-    private val gunItemType = Material.GOLDEN_HOE
-    private val gunItemName = "${ChatColor.YELLOW}銃"
+    val gunItemType = Material.GOLDEN_HOE
+    val gunItemName = "${ChatColor.YELLOW}銃"
     private val bulletKey = NamespacedKey(plugin, "bullet")
 
     private val firingRangeDistance = 50.0
@@ -61,9 +61,10 @@ class GunManager(plugin: Plugin) {
 
     fun reload(gun: ItemStack) {
         setBullet(gun, maxBullet)
+        displayBullet(gun)
     }
 
-    fun displayBullet(gun: ItemStack) {
+    private fun displayBullet(gun: ItemStack) {
         val itemMeta = gun.itemMeta as Damageable
         val bullet = acquisitionBullet(gun)
 
