@@ -2,23 +2,29 @@ package com.github.ringoame196_s_mcPlugin
 
 import org.bukkit.ChatColor
 import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.Damageable
+import org.bukkit.persistence.PersistentDataType
+import org.bukkit.plugin.Plugin
 
-class GunManager {
+class GunManager(plugin: Plugin) {
     private val gunItemType = Material.GOLDEN_HOE
     private val gunItemName = "${ChatColor.YELLOW}銃"
+    private val bulletKey = NamespacedKey(plugin, "bullet")
 
     private val firingRangeDistance = 50.0
+    private val maxBullet = 15
 
     fun checkGun(item: ItemStack): Boolean {
         return item.type == gunItemType && item.itemMeta?.displayName == gunItemName
     }
 
-    fun shot(player: Player): LivingEntity? {
+    fun shot(player: Player, gun: ItemStack): LivingEntity? {
         val sound = Sound.ENTITY_FIREWORK_ROCKET_BLAST
         player.world.playSound(player.location, sound, 1f, 1f)
 
@@ -41,11 +47,43 @@ class GunManager {
             )
         }
 
+        val bullet = acquisitionBullet(gun)
+        setBullet(gun, bullet - 1)
+        displayBullet(gun)
+
         val result = player.world.rayTraceEntities(
             eyeLocation,
             direction,
             maxDistance
         ) { entity -> entity != player && entity is LivingEntity } ?: return null
         return result.hitEntity as LivingEntity
+    }
+
+    fun reload(gun: ItemStack) {
+        setBullet(gun, maxBullet)
+    }
+
+    fun displayBullet(gun: ItemStack) {
+        val itemMeta = gun.itemMeta as Damageable
+        val bullet = acquisitionBullet(gun)
+
+        itemMeta.lore = mutableListOf("弾数:$bullet/$maxBullet")
+
+        val usedBullets = maxBullet - bullet
+        val damage = (gunItemType.maxDurability * usedBullets) / maxBullet
+        itemMeta.damage = damage
+
+        gun.itemMeta = itemMeta
+    }
+
+    fun setBullet(gun: ItemStack, count: Int) {
+        val itemMeta = gun.itemMeta
+        itemMeta?.persistentDataContainer?.set(bulletKey, PersistentDataType.INTEGER, count)
+        gun.itemMeta = itemMeta
+    }
+
+    fun acquisitionBullet(gun: ItemStack): Int {
+        val itemMeta = gun.itemMeta
+        return itemMeta?.persistentDataContainer?.get(bulletKey, PersistentDataType.INTEGER) ?: 0
     }
 }

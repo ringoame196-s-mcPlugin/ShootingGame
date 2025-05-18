@@ -1,13 +1,15 @@
 package com.github.ringoame196_s_mcPlugin.events
 
 import com.github.ringoame196_s_mcPlugin.GunManager
+import org.bukkit.Sound
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.plugin.Plugin
 
-class GunEvent : Listener {
-    private val gunManager = GunManager()
+class GunEvent(plugin: Plugin) : Listener {
+    private val gunManager = GunManager(plugin)
 
     @EventHandler
     fun shot(e: PlayerInteractEvent) {
@@ -16,13 +18,22 @@ class GunEvent : Listener {
         val action = e.action
 
         if (!gunManager.checkGun(item)) return
+        e.isCancelled = true
 
-        when(action) {
-            Action.RIGHT_CLICK_AIR,Action.RIGHT_CLICK_BLOCK -> {
-                val hit = gunManager.shot(player)
+        when (action) {
+            Action.RIGHT_CLICK_AIR, Action.RIGHT_CLICK_BLOCK -> {
+                if (gunManager.acquisitionBullet(item) <= 0) {
+                    val sound = Sound.BLOCK_DISPENSER_DISPENSE
+                    player.playSound(player, sound, 1f, 1f)
+                    return
+                }
+                val hit = gunManager.shot(player, item)
             }
             else -> {
-
+                gunManager.reload(item)
+                gunManager.displayBullet(item)
+                val sound = Sound.BLOCK_IRON_DOOR_OPEN
+                player.playSound(player, sound, 1f, 1f)
             }
         }
     }
