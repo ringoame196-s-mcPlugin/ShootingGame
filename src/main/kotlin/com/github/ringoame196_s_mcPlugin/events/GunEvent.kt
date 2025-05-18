@@ -1,7 +1,11 @@
 package com.github.ringoame196_s_mcPlugin.events
 
+import com.github.ringoame196_s_mcPlugin.Data
 import com.github.ringoame196_s_mcPlugin.GunManager
+import com.github.ringoame196_s_mcPlugin.TargetManager
 import org.bukkit.Sound
+import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
@@ -10,9 +14,10 @@ import org.bukkit.plugin.Plugin
 
 class GunEvent(plugin: Plugin) : Listener {
     private val gunManager = GunManager(plugin)
+    private val targetManager = TargetManager(plugin)
 
     @EventHandler
-    fun shot(e: PlayerInteractEvent) {
+    fun onPlayerInteract(e: PlayerInteractEvent) {
         val player = e.player
         val item = e.item ?: return
         val action = e.action
@@ -28,7 +33,9 @@ class GunEvent(plugin: Plugin) : Listener {
                     player.playSound(player, sound, 1f, 1f)
                     return
                 }
-                val hit = gunManager.shot(player, item)
+                val hitEntity = gunManager.shot(player, item) ?: return
+                if (hitEntity != Data.target) return
+                hit(hitEntity, player)
             }
             else -> {
                 gunManager.reload(item)
@@ -37,5 +44,12 @@ class GunEvent(plugin: Plugin) : Listener {
                 player.setCooldown(item.type, 20)
             }
         }
+    }
+
+    private fun hit(hit: LivingEntity, player: Player) {
+        val sound = Sound.ENTITY_ARROW_HIT_PLAYER
+        hit.remove()
+        player.playSound(player, sound, 1f, 1f)
+        targetManager.randomSummon()
     }
 }
