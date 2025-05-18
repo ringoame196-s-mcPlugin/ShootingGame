@@ -8,6 +8,7 @@ class Main : JavaPlugin() {
     private val plugin = this
     override fun onEnable() {
         super.onEnable()
+        // config関係
         saveDefaultConfig()
         loadConfig()
 
