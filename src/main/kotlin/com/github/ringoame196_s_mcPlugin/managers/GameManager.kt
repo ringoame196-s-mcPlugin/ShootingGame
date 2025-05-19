@@ -1,10 +1,12 @@
-package com.github.ringoame196_s_mcPlugin
+package com.github.ringoame196_s_mcPlugin.managers
 
+import com.github.ringoame196_s_mcPlugin.Data
 import net.md_5.bungee.api.ChatColor
 import org.bukkit.Bukkit
 import org.bukkit.Sound
 import org.bukkit.command.CommandSender
 import org.bukkit.plugin.Plugin
+import kotlin.collections.iterator
 
 class GameManager(plugin: Plugin) {
     private val targetManager = TargetManager(plugin)

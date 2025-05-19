@@ -1,4 +1,4 @@
-package com.github.ringoame196_s_mcPlugin
+package com.github.ringoame196_s_mcPlugin.managers
 
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File

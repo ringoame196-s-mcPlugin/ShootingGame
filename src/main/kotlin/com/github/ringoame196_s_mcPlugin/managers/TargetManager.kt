@@ -1,5 +1,6 @@
-package com.github.ringoame196_s_mcPlugin
+package com.github.ringoame196_s_mcPlugin.managers
 
+import com.github.ringoame196_s_mcPlugin.Data
 import net.md_5.bungee.api.chat.ClickEvent
 import net.md_5.bungee.api.chat.ComponentBuilder
 import net.md_5.bungee.api.chat.HoverEvent
@@ -44,7 +45,7 @@ class TargetManager(plugin: Plugin) {
         for (target in Data.targetList) {
             val command = "/tp @s ${target.x} ${target.y} ${target.z}"
 
-            val prefix = net.md_5.bungee.api.chat.TextComponent("${target.world?.name} ${target.x} ${target.y} ${target.z}")
+            val prefix = TextComponent("${target.world?.name} ${target.x} ${target.y} ${target.z}")
 
             val clickable = TextComponent("[クリック]")
             clickable.clickEvent = ClickEvent(ClickEvent.Action.RUN_COMMAND, command)
