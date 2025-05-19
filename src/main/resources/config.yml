@@ -1,2 +1,3 @@
 firing_range_distance: 50.0
 max_bullet : 15
+target_goal : 20

@@ -13,6 +13,7 @@ class Main : JavaPlugin() {
         loadConfig()
 
         // targetList関係
+        saveResource(Data.TARGET_LIST_FILE_NAME, false)
         val targetManager = TargetManager(plugin)
         targetManager.loadFile()
 
@@ -24,5 +25,6 @@ class Main : JavaPlugin() {
     private fun loadConfig() {
         Data.firingRangeDistance = config.getDouble("firing_range_distance")
         Data.maxBullet = config.getInt("max_bullet")
+        Data.targetGoal = config.getInt("target_goal")
     }
 }

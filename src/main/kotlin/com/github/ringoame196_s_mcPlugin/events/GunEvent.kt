@@ -50,6 +50,16 @@ class GunEvent(plugin: Plugin) : Listener {
         val sound = Sound.ENTITY_ARROW_HIT_PLAYER
         hit.remove()
         player.playSound(player, sound, 1f, 1f)
-        targetManager.randomSummon()
+
+        // プレイヤーデータ
+        val playerData = Data.playerHitData[player] ?: 0
+        Data.playerHitData[player] = playerData + 1
+
+        Data.targetHitCount ++
+        if (Data.targetHitCount >= Data.targetGoal) {
+            gameManager.stop()
+        } else {
+            targetManager.randomSummon()
+        }
     }
 }

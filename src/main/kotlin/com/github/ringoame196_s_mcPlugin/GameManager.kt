@@ -29,5 +29,7 @@ class GameManager(plugin: Plugin) {
         if (!Data.gameStatus) return
         Data.target?.remove()
         Data.gameStatus = false
+        Data.targetHitCount = 0
+        Data.playerHitData.clear()
     }
 }
