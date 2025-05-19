@@ -3,6 +3,10 @@
 ## プラグイン説明
 簡易的なシューティングゲームをサーバーに追加
 
+
+https://github.com/user-attachments/assets/3c10d800-7040-4fba-ac0f-b6f0bf662809
+
+
 ## プラグインダウンロード
 [ダウンロードリンク](https://github.com/ringoame196-s-mcPlugin/ShootingGame/releases/latest)
 
