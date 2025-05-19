@@ -1,6 +1,7 @@
 package com.github.ringoame196_s_mcPlugin.events
 
 import com.github.ringoame196_s_mcPlugin.Data
+import com.github.ringoame196_s_mcPlugin.GameManager
 import com.github.ringoame196_s_mcPlugin.GunManager
 import com.github.ringoame196_s_mcPlugin.TargetManager
 import org.bukkit.Sound
@@ -15,6 +16,7 @@ import org.bukkit.plugin.Plugin
 class GunEvent(plugin: Plugin) : Listener {
     private val gunManager = GunManager(plugin)
     private val targetManager = TargetManager(plugin)
+    private val gameManager = GameManager(plugin)
 
     @EventHandler
     fun onPlayerInteract(e: PlayerInteractEvent) {

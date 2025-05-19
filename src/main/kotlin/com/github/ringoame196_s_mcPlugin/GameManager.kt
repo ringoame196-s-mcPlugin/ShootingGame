@@ -27,6 +27,15 @@ class GameManager(plugin: Plugin) {
 
     fun stop() {
         if (!Data.gameStatus) return
+
+        Bukkit.broadcastMessage("${ChatColor.GOLD}シューティングゲーム 終了")
+        // 結果表示
+        Bukkit.broadcastMessage("${ChatColor.YELLOW}[結果]")
+        for ((player, hitCount) in Data.playerHitData) {
+            Bukkit.broadcastMessage("${ChatColor.GREEN}${player.displayName} > ${hitCount}HIT")
+        }
+
+        // リセット処理
         Data.target?.remove()
         Data.gameStatus = false
         Data.targetHitCount = 0
