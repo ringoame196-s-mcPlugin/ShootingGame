@@ -1,20 +1,20 @@
 package com.github.ringoame196_s_mcPlugin.commands
 
-import com.github.ringoame196_s_mcPlugin.GameManager
-import com.github.ringoame196_s_mcPlugin.GunManager
-import com.github.ringoame196_s_mcPlugin.TargetManager
+import com.github.ringoame196_s_mcPlugin.GUN
+import com.github.ringoame196_s_mcPlugin.managers.GameManager
+import com.github.ringoame196_s_mcPlugin.managers.GunManager
+import com.github.ringoame196_s_mcPlugin.managers.TargetManager
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.Plugin
 
 class Command(private val plugin: Plugin) : CommandExecutor, TabCompleter {
-    private val gunManager = GunManager(plugin)
     private val gameManager = GameManager(plugin)
+    private val gun = GUN(plugin)
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         val command = args[0]
@@ -33,11 +33,7 @@ class Command(private val plugin: Plugin) : CommandExecutor, TabCompleter {
     }
 
     private fun give(player: Player) {
-        val gunItem = ItemStack(gunManager.gunItemType)
-        val itemMeta = gunItem.itemMeta
-        itemMeta?.setDisplayName(gunManager.gunItemName)
-        gunItem.itemMeta = itemMeta
-        gunManager.reload(gunItem)
+        val gunItem = gun.makeItem()
 
         player.inventory.addItem(gunItem)
     }

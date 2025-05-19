@@ -1,9 +1,10 @@
 package com.github.ringoame196_s_mcPlugin.events
 
 import com.github.ringoame196_s_mcPlugin.Data
-import com.github.ringoame196_s_mcPlugin.GameManager
-import com.github.ringoame196_s_mcPlugin.GunManager
-import com.github.ringoame196_s_mcPlugin.TargetManager
+import com.github.ringoame196_s_mcPlugin.GUN
+import com.github.ringoame196_s_mcPlugin.managers.GameManager
+import com.github.ringoame196_s_mcPlugin.managers.GunManager
+import com.github.ringoame196_s_mcPlugin.managers.TargetManager
 import org.bukkit.Sound
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
@@ -15,6 +16,7 @@ import org.bukkit.plugin.Plugin
 
 class GunEvent(plugin: Plugin) : Listener {
     private val gunManager = GunManager(plugin)
+    private val gun = GUN(plugin)
     private val targetManager = TargetManager(plugin)
     private val gameManager = GameManager(plugin)
 
@@ -35,12 +37,12 @@ class GunEvent(plugin: Plugin) : Listener {
                     player.playSound(player, sound, 1f, 1f)
                     return
                 }
-                val hitEntity = gunManager.shot(player, item) ?: return
+                val hitEntity = gun.shot(player, item) ?: return
                 if (hitEntity != Data.target) return
                 hit(hitEntity, player)
             }
             else -> {
-                gunManager.reload(item)
+                gun.reload(item)
                 val sound = Sound.BLOCK_IRON_DOOR_OPEN
                 player.playSound(player, sound, 1f, 1f)
                 player.setCooldown(item.type, 20)
@@ -58,10 +60,7 @@ class GunEvent(plugin: Plugin) : Listener {
         Data.playerHitData[player] = playerData + 1
 
         Data.targetHitCount ++
-        if (Data.targetHitCount >= Data.targetGoal) {
-            gameManager.stop()
-        } else {
-            targetManager.randomSummon()
-        }
+        if (Data.targetHitCount >= Data.targetGoal) gameManager.stop()
+        else targetManager.randomSummon()
     }
 }

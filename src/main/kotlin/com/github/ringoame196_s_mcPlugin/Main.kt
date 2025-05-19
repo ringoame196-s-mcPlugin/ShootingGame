@@ -2,6 +2,7 @@ package com.github.ringoame196_s_mcPlugin
 
 import com.github.ringoame196_s_mcPlugin.commands.Command
 import com.github.ringoame196_s_mcPlugin.events.GunEvent
+import com.github.ringoame196_s_mcPlugin.managers.TargetManager
 import org.bukkit.plugin.java.JavaPlugin
 
 class Main : JavaPlugin() {
