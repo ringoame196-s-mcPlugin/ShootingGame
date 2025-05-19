@@ -2,6 +2,7 @@ package com.github.ringoame196_s_mcPlugin
 
 import net.md_5.bungee.api.ChatColor
 import org.bukkit.Bukkit
+import org.bukkit.Sound
 import org.bukkit.command.CommandSender
 import org.bukkit.plugin.Plugin
 
@@ -30,8 +31,10 @@ class GameManager(plugin: Plugin) {
 
         Bukkit.broadcastMessage("${ChatColor.GOLD}シューティングゲーム 終了")
         // 結果表示
+        val sound = Sound.BLOCK_ANVIL_USE
         Bukkit.broadcastMessage("${ChatColor.YELLOW}[結果]")
         for ((player, hitCount) in Data.playerHitData) {
+            player.playSound(player, sound, 1f, 1f)
             Bukkit.broadcastMessage("${ChatColor.GREEN}${player.displayName} > ${hitCount}HIT")
         }
 
