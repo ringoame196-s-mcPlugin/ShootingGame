@@ -1,5 +1,4 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import groovy.lang.Closure
 import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
 import java.net.HttpURLConnection
 import java.net.URL
@@ -14,14 +13,18 @@ plugins {
     id("org.jmailen.kotlinter") version "3.8.0"
 }
 
-val gitVersion: Closure<String> by extra
+val mcVersion: String by project
+val pluginVersion: String by project
 
-val pluginVersion: String by project.ext
+// 表示用の最終バージョン
+val fullVersion = "$mcVersion-$pluginVersion"
+version = fullVersion
 
 repositories {
     mavenCentral()
-    maven(url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven(url = "https://oss.sonatype.org/content/groups/public/")
+    // Paper API
+    maven("https://repo.papermc.io/repository/maven-public/")
 }
 
 val shadowImplementation: Configuration by configurations.creating
@@ -29,15 +32,15 @@ configurations["implementation"].extendsFrom(shadowImplementation)
 
 dependencies {
     shadowImplementation(kotlin("stdlib"))
-    compileOnly("org.spigotmc:spigot-api:$pluginVersion-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:$mcVersion-R0.1-SNAPSHOT")
 }
 
 configure<BukkitPluginDescription> {
     main = "com.github.ringoame196_s_mcPlugin.Main"
-    version = pluginVersion
-    apiVersion = "1." + pluginVersion.split(".")[1]
+    version = fullVersion
+    apiVersion = "1." + mcVersion.split(".")[1]
     author = "ringoame196_s_mcPlugin"
-    website = "https://github.com/ringoame196-s-mcPlugin"
+    website = "https://github.com/ringoame196-s-mcPlugin/ExplosionFilter"
 
     commands {
         register("shootinggame") {
@@ -60,18 +63,18 @@ tasks.withType<ShadowJar> {
 tasks.named("build") {
     dependsOn("shadowJar")
     // プラグインを特定のパスへ自動コピー
-    val copyFilePath = "M:/TwitterServer/plugins/" // コピー先のフォルダーパス
+    val copyFilePath = "Z:/minecraft/TwitterServer/plugins/" // コピー先のフォルダーパス
     val copyFile = File(copyFilePath)
     if (copyFile.exists() && copyFile.isDirectory) {
         doFirst {
             copy {
-                from(buildDir.resolve("libs/${project.name}.jar"))
+                from(buildDir.resolve("libs/${project.name}-$fullVersion.jar"))
                 into(copyFile)
             }
         }
         doLast {
             val port = 25585
-            val ip = "192.168.0.21"
+            val ip = "ringoame-server"
             val apiUrl = "http://$ip:$port/plugin?name=${project.name}"
 
             try {
@@ -101,6 +104,18 @@ tasks.named("build") {
                 println("Warning: API通信で予期しないエラーが発生しました: ${e.message}")
             }
         }
+    }
+}
+
+tasks.named("printVersion") {
+    doLast {
+        println(fullVersion)
+    }
+}
+
+tasks.named("printVersion") {
+    doLast {
+        println(fullVersion)
     }
 }
 
