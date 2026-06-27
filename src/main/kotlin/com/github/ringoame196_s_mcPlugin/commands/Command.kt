@@ -2,7 +2,6 @@ package com.github.ringoame196_s_mcPlugin.commands
 
 import com.github.ringoame196_s_mcPlugin.GUN
 import com.github.ringoame196_s_mcPlugin.managers.GameManager
-import com.github.ringoame196_s_mcPlugin.managers.GunManager
 import com.github.ringoame196_s_mcPlugin.managers.TargetManager
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
