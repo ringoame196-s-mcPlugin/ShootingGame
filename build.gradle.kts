@@ -47,7 +47,7 @@ configure<BukkitPluginDescription> {
             description = "ShootingGame"
             aliases = listOf("sgame")
             permission = "op"
-            usage = "/shootinggame <start,stop,target> (<add,remove>)"
+            usage = "/shootinggame <start,stop,target> (<add,remove>,<target>)"
         }
     }
 }

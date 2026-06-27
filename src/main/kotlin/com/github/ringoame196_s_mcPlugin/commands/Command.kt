@@ -3,6 +3,7 @@ package com.github.ringoame196_s_mcPlugin.commands
 import com.github.ringoame196_s_mcPlugin.GUN
 import com.github.ringoame196_s_mcPlugin.managers.GameManager
 import com.github.ringoame196_s_mcPlugin.managers.TargetManager
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -18,7 +19,7 @@ class Command(private val plugin: Plugin) : CommandExecutor, TabCompleter {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         val command = args[0]
         when (command) {
-            CommandConst.GIVE_COMMAND -> give(sender as? Player ?: return true)
+            CommandConst.GIVE_COMMAND -> give(sender, args)
             CommandConst.TARGET_COMMAND -> return target(sender as? Player ?: return true, args)
             CommandConst.START_COMMAND -> gameManager.start(sender)
             CommandConst.STOP_COMMAND -> gameManager.stop()
@@ -31,10 +32,24 @@ class Command(private val plugin: Plugin) : CommandExecutor, TabCompleter {
         return true
     }
 
-    private fun give(player: Player) {
+    private fun give(sender: CommandSender, args: Array<out String>) {
         val gunItem = gun.makeItem()
+        val targetPlayers: List<Player> = if (args.size < 2) {
+            if (sender is Player) {
+                listOf(sender)
+            } else {
+                listOf()
+            }
+        } else {
+            Bukkit.selectEntities(sender, args[1]).filterIsInstance<Player>()
+        }
 
-        player.inventory.addItem(gunItem)
+        for (targetPlayer in targetPlayers) {
+            targetPlayer.inventory.addItem(gunItem)
+        }
+
+        val message = "${targetPlayers.size}人に銃を配布しました"
+        sender.sendMessage(message)
     }
 
     private fun target(player: Player, args: Array<out String>): Boolean {
@@ -65,6 +80,9 @@ class Command(private val plugin: Plugin) : CommandExecutor, TabCompleter {
                     CommandConst.REMOVE_SUB_COMMAND,
                     CommandConst.LIST_SUB_COMMAND
                 )
+                CommandConst.GIVE_COMMAND -> (
+                    Bukkit.getOnlinePlayers().map { it.name } + "@a" + "@p" + "@r" + "@s"
+                    ).toMutableList()
                 else -> mutableListOf()
             }
             else -> mutableListOf()
